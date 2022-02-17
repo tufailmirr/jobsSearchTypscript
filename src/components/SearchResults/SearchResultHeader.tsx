@@ -13,15 +13,15 @@ const SearchResultHeader = ({
   return (
     <div className="searchResultHeader">
       <div className="searchResultHeader__left">
-        <strong>{matches}</strong>
-        <span>mathcing found</span>
+        <span>{matches}</span>
+        <span>jobs found</span>
       </div>
       <div className="searchResultHeader__right">
         <div>
           <span>Sort By</span>
         </div>{" "}
         <div>
-          <Filter options={sortData} onSelect={onSelect} />
+          <Filter options={sortData} disabled={true} onSelect={onSelect} />
         </div>
       </div>
     </div>

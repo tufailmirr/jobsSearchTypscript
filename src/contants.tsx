@@ -21,9 +21,29 @@ export const sortData = [
   },
 ];
 
+export const pageLimit = [
+  {
+    name: 10,
+    value: 10,
+  },
+  {
+    name: 5,
+    value: 5,
+  },
+
+  {
+    name: 40,
+    value: 40,
+  },
+  {
+    name: 70,
+    value: 70,
+  },
+];
+
 export const categoryData = [
   {
-    name: "All",
+    name: "All Type Of Jobs",
     value: "",
   },
   {

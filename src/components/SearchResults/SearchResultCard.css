@@ -1,6 +1,6 @@
 .searchResultCard {
   height: 100%;
-  background-color: rgba(245, 165, 73, 0.534);
+  background-color: rgba(224, 189, 113, 0.534);
   /* display: flex; */
   border-radius: 10px;
   width: 100%;
@@ -25,7 +25,12 @@
 }
 .cardBody > div > h2 {
   font-weight: 700;
-  color: rgb(80, 40, 17);
+  color: rgb(238, 126, 62);
+  cursor: pointer;
+}
+
+.cardBody > div > h2:hover {
+  color: #b6661b;
 }
 .mainJobTags {
   display: flex;

@@ -14,11 +14,11 @@ const SearchInput = ({
 }): JSX.Element => {
   return (
     <div>
-      {text}
+      <h2>{text}</h2>
       <Search
         placeholder="Search Some Jobs Here"
         onSearch={(text: string) => {
-          onTextChange("svsdv");
+          onTextChange(text);
         }}
         onChange={(event: React.FormEvent<HTMLInputElement>) => {
           onTextChange(event.currentTarget.value);

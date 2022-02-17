@@ -23,7 +23,7 @@ const SearchResultCard = ({ jobData }: { jobData: singleJobData }) => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 5000);
+    }, 2000);
   }, []);
 
   return (
@@ -31,7 +31,8 @@ const SearchResultCard = ({ jobData }: { jobData: singleJobData }) => {
       <Skeleton
         avatar
         paragraph={{
-          rows: 4,
+          rows: 2,
+          width: ["100%"],
         }}
         style={{
           width: "100%",
