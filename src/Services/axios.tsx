@@ -1,5 +1,7 @@
 import axios from "axios";
 
-// export const BaseURL = axios.create({
-//     baseURL :
-// })
+const BaseURL = axios.create({
+  baseURL: "https://remotive.io/api/remote-jobs?",
+});
+
+export default BaseURL;
