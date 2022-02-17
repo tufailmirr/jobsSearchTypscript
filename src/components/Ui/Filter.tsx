@@ -6,18 +6,19 @@ const { Option } = Select;
 const Filter = ({
   value,
   onSelect,
+  options,
 }: {
   value?: string;
   onSelect: (text: string) => void;
+  options: { value: string; name: string }[];
 }): JSX.Element => {
   return (
-    <Select defaultValue="lucy" style={{ width: 120 }} onChange={onSelect}>
-      <Option value="jack">Jack</Option>
-      <Option value="lucy">Lucy</Option>
-      <Option value="disabled" disabled>
-        Disabled
-      </Option>
-      <Option value="Yiminghe">yiminghe</Option>
+    <Select defaultValue="" style={{ width: 120 }} onChange={onSelect}>
+      {options.map((item, index) => (
+        <Option key={index} value={item.value}>
+          {item.name}
+        </Option>
+      ))}
     </Select>
   );
 };
