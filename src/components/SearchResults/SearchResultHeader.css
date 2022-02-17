@@ -1,0 +1,20 @@
+.searchResultHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchResultHeader__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.searchResultHeader__left {
+  background-color: orange;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.searchResultHeader__left > strong {
+  margin: 0px 10px 10px 0px;
+  color: antiquewhite;
+}
