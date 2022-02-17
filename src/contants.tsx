@@ -23,6 +23,10 @@ export const sortData = [
 
 export const categoryData = [
   {
+    name: "All",
+    value: "",
+  },
+  {
     name: "Software Development",
     value: "software-dev",
   },

@@ -13,7 +13,7 @@ const Filter = ({
   options: { value: string; name: string }[];
 }): JSX.Element => {
   return (
-    <Select defaultValue="" style={{ width: 120 }} onChange={onSelect}>
+    <Select defaultValue="" style={{ width: "100%" }} onChange={onSelect}>
       {options.map((item, index) => (
         <Option key={index} value={item.value}>
           {item.name}

@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
+
 import "./App.css";
 import "antd/dist/antd.css";
 import SearchInput from "./components/SearchInput";
 import SearchResultCard from "./components/SearchResults/SearchResultCard";
 import SearchResultHeader from "./components/SearchResults/SearchResultHeader";
-
+import Filter from "./components/Ui/Filter";
+import { categoryData } from "./contants";
+import { Layout, Space } from "antd";
+import { getJobsList } from "./Services/ApiClient";
+import { useDebounce } from "use-debounce";
+const { Header, Footer, Sider, Content } = Layout;
 const a = {
   job_count: 124,
   jobs: [
@@ -81,38 +87,90 @@ const a = {
 };
 
 interface AllJobs {
-  job_count: number;
-  jobs: [
-    {
-      id: number;
-      url: string;
-      title: string;
-      company_name: string;
-      company_logo: string;
-      category: string;
-      job_type: string;
-      candidate_required_location: string;
-      salary: string;
-    }
-  ];
+  id: number;
+  url: string;
+  title: string;
+  company_name: string;
+  company_logo: string;
+  category: string;
+  job_type: string;
+  candidate_required_location: string;
+  salary: string;
 }
 
 function App() {
-  const [query, setQuery] = useState<string | null>("");
-  const [jobs, setJobs] = useState(a);
+  const [query, setQuery] = useState<string | null>(null);
+  const [jobs, setJobs] = useState<AllJobs[]>();
+  const [sort, setSort] = useState<string | null>(null);
+  const [category, setCategory] = useState<string>("");
+  const [jobCount, setjobCount] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(50);
+  const [value] = useDebounce(query, 400);
+
+  useEffect(() => {
+    getJobs();
+  }, [sort, category, value]);
+
   const onTextChange = (text: string) => {
     setQuery(text);
     // console.log(text);
+  };
+  const onSortSelect = (text: string) => {
+    setSort(text);
+  };
+
+  const onCategorySelect = (text: string) => {
+    setCategory(text);
+  };
+
+  const getJobs = async () => {
+    try {
+      const { data } = await getJobsList(query, sort, category, limit);
+      console.log(data);
+      setjobCount(data?.["job-count"]);
+      setJobs(data.jobs);
+    } catch (error) {
+      let msg = (error as Error).message;
+      console.log(msg);
+    }
   };
 
   console.log(query);
 
   return (
-    <div className="App">
-      <SearchInput onTextChange={onTextChange} text="Tufail" />
-      <SearchResultHeader />
-      <SearchResultCard jobData={jobs.jobs[0]} />
-    </div>
+    <Layout>
+      <Header>Header</Header>
+      <Content
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <div className="App">
+          <SearchInput
+            onTextChange={onTextChange}
+            text="Search For the jib syou want"
+          />
+          <div>
+            <Filter options={categoryData} onSelect={onCategorySelect} />
+          </div>
+          <SearchResultHeader matches={jobCount} onSelect={onSortSelect} />
+          <div
+            style={{
+              height: "100vh",
+              overflow: "scroll",
+            }}
+          >
+            <Space direction="vertical" size={25}>
+              {jobs?.map((job) => (
+                <SearchResultCard jobData={job} />
+              ))}
+            </Space>
+          </div>
+        </div>
+      </Content>
+      <Footer>Footer</Footer>
+    </Layout>
   );
 }
 
