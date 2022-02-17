@@ -28,3 +28,9 @@
   color: rgb(219, 214, 214) !important;
   font-weight: 900 !important;
 }
+
+@media only screen and (max-width: 768px) {
+  .header h2 {
+    font-size: 18px;
+  }
+}
