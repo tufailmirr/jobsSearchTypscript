@@ -1,6 +1,8 @@
 .searchResultHeader {
   display: flex;
   justify-content: space-between;
+  margin: 30px 0px 20px 0px;
+  align-items: center;
 }
 
 .searchResultHeader__right {
@@ -9,12 +11,13 @@
   gap: 10px;
 }
 .searchResultHeader__left {
-  background-color: orange;
-  padding: 5px;
-  border-radius: 10px;
+  font-weight: 500;
 }
 
 .searchResultHeader__left > strong {
   margin: 0px 10px 10px 0px;
   color: antiquewhite;
+  background-color: orange;
+  padding: 5px;
+  border-radius: 10px;
 }

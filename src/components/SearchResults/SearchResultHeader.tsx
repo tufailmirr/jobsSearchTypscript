@@ -1,15 +1,19 @@
 import React from "react";
+import { sortData } from "../../contants";
 import Filter from "../Ui/Filter";
 import "./SearchResultHeader.css";
 
-const SearchResultHeader = () => {
-  const onSelect = (text: string) => {
-    console.log(text);
-  };
+const SearchResultHeader = ({
+  matches,
+  onSelect,
+}: {
+  matches: number;
+  onSelect: (text: string) => void;
+}): JSX.Element => {
   return (
     <div className="searchResultHeader">
       <div className="searchResultHeader__left">
-        <strong>1540</strong>
+        <strong>{matches}</strong>
         <span>mathcing found</span>
       </div>
       <div className="searchResultHeader__right">
@@ -17,7 +21,7 @@ const SearchResultHeader = () => {
           <span>Sort By</span>
         </div>{" "}
         <div>
-          <Filter onSelect={onSelect} />
+          <Filter options={sortData} onSelect={onSelect} />
         </div>
       </div>
     </div>
