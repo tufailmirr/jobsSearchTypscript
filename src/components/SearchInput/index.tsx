@@ -15,15 +15,12 @@ const SearchInput = ({
   return (
     <div>
       <h2>{text}</h2>
-      <Search
+      <Input
         placeholder="Search Some Jobs Here"
-        onSearch={(text: string) => {
-          onTextChange(text);
-        }}
         onChange={(event: React.FormEvent<HTMLInputElement>) => {
           onTextChange(event.currentTarget.value);
         }}
-        enterButton
+        // enterButton
       />
     </div>
   );
