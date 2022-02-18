@@ -10,6 +10,7 @@ import { Empty, Layout, Space } from "antd";
 import { getJobsList } from "./Services/ApiClient";
 import { useDebounce } from "use-debounce";
 import Loader from "./components/Ui/Loader";
+import axios from "axios";
 const { Footer, Content } = Layout;
 
 interface AllJobs {
@@ -22,6 +23,7 @@ interface AllJobs {
   job_type: string;
   candidate_required_location: string;
   salary: string;
+  description: string;
 }
 
 function App() {
@@ -31,11 +33,19 @@ function App() {
   const [category, setCategory] = useState<string>("");
   const [jobCount, setjobCount] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
-  const [value] = useDebounce(query, 400);
+  const [value] = useDebounce(query, 100);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getJobs();
+    const CancelToken = axios.CancelToken;
+    let source = CancelToken.source();
+
+    // save the new request for cancellation
+    source = axios.CancelToken.source();
+    const a = getJobs(source);
+    return () => {
+      source && source.cancel("Operation canceled due to new request.");
+    };
   }, [sort, category, value, limit]);
 
   const onTextChange = (text: string) => {
@@ -54,10 +64,10 @@ function App() {
     setLimit(value);
   };
 
-  const getJobs = async () => {
+  const getJobs = async (source: any) => {
     setLoading(true);
     try {
-      const { data } = await getJobsList(query, sort, category, limit);
+      const { data } = await getJobsList(query, sort, category, limit, source);
       console.log(data);
       setjobCount(data?.["job-count"]);
       setJobs(data.jobs);
@@ -78,6 +88,51 @@ function App() {
       <div className="header">
         <h2>Find A Best Job For You here</h2>
       </div>
+      <div className="searchHeaderWrapper">
+        <div className="searchHeader">
+          <SearchInput
+            onTextChange={onTextChange}
+            text="Search the remote jobs you want"
+          />
+          <Filter options={categoryData} value="" onSelect={onCategorySelect} />
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            <div>
+              <span
+                style={{
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Page Limit
+              </span>
+              <Filter
+                disabled={false}
+                value={10}
+                options={pageLimit}
+                onSelect={changeLimit}
+              />
+            </div>
+            <div>
+              <span
+                style={{
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Choose Company
+              </span>
+              <Filter
+                disabled={true}
+                options={pageLimit}
+                onSelect={changeLimit}
+              />
+            </div>
+          </div>
+          <SearchResultHeader matches={jobCount} onSelect={onSortSelect} />
+        </div>
+      </div>
       <Content
         style={{
           display: "flex",
@@ -85,53 +140,6 @@ function App() {
         }}
       >
         <div className="App">
-          <SearchInput
-            onTextChange={onTextChange}
-            text="Search the remote jobs you want"
-          />
-          <div>
-            <Filter
-              options={categoryData}
-              value=""
-              onSelect={onCategorySelect}
-            />
-            <div
-              style={{
-                display: "flex",
-              }}
-            >
-              <div>
-                <span
-                  style={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Page Limit
-                </span>
-                <Filter
-                  disabled={false}
-                  value={10}
-                  options={pageLimit}
-                  onSelect={changeLimit}
-                />
-              </div>
-              <div>
-                <span
-                  style={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Choose Company
-                </span>
-                <Filter
-                  disabled={true}
-                  options={pageLimit}
-                  onSelect={changeLimit}
-                />
-              </div>
-            </div>
-          </div>
-          <SearchResultHeader matches={jobCount} onSelect={onSortSelect} />
           <div
             style={{
               height: "100vh",
@@ -143,7 +151,7 @@ function App() {
               direction="vertical"
               size={25}
               style={{
-                width: "100%",
+                maxWidth: "460px",
               }}
             >
               {loading ? (
