@@ -15,11 +15,12 @@ interface singleJobData {
   job_type: string;
   candidate_required_location: string;
   salary: string;
-  //   [x: string]: any;
+  description: string;
 }
 
 const SearchResultCard = ({ jobData }: { jobData: singleJobData }) => {
   const [loading, setLoading] = useState<boolean>(true);
+  const [expand, setExpand] = useState<boolean>(false);
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -27,7 +28,12 @@ const SearchResultCard = ({ jobData }: { jobData: singleJobData }) => {
   }, []);
 
   return (
-    <div className="searchResultCard">
+    <div
+      onClick={() => {
+        setExpand((prev: boolean) => !prev);
+      }}
+      className="searchResultCard"
+    >
       <Skeleton
         avatar
         paragraph={{
@@ -55,6 +61,11 @@ const SearchResultCard = ({ jobData }: { jobData: singleJobData }) => {
           </div>
         </div>
       </Skeleton>
+
+      <div
+        className={`${expand ? "expandable" : "expanded"}  exp`}
+        dangerouslySetInnerHTML={{ __html: jobData.description }}
+      ></div>
     </div>
   );
 };
